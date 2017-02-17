@@ -21,23 +21,20 @@ enableLogging - _true_ to enable logging, and _false_ to disable (default).
 **_recognize()_**  
 Initiate speech recognition.
 
-**_getResult()_**  
-Obtain the recognition result as a String. This method should not be run on the main thread to avoid blocking it.
+### Public Interface:
+**_public interface SpeechToTextListener_**  
+Interface for retrieving recognition result.
+
+**_onRecognitionResult(String recognitionResult)_**  
+Callback method for the recognize() method.
+recognitionResult - string result for the performed recognition.
 
 ## Example Usage
 SpeechToText stt = new SpeechToText(this, SpeechToText.SENTENCE);  
 stt.setProgressLogging(true);  
 stt.recognize();  
-Thread thread = new Thread(new Runnable() {  
-&nbsp;&nbsp;&nbsp;&nbsp;@Override  
-&nbsp;&nbsp;&nbsp;&nbsp;public void run() {  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;final String result = stt.getResult();  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;runOnUiThread(new Runnable() {  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@Override  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public void run() {  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;textView.setText(result);  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;});  
-&nbsp;&nbsp;&nbsp;&nbsp;}  
-});  
-thread.start();
+
+@Override  
+public void onRecognitionResult(String recognitionResult) {
+&nbsp;&nbsp;&nbsp;&nbsp;mTextView.setText(recognitionResult;  
+}

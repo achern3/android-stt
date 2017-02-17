@@ -58,21 +58,8 @@ public class SpeechToText {
     }
 
     /**
-     * Retrieve recognition result after running recognize(). This method should not be run in the main thread.
-     * @return String - the recognition result string
-     */
-    public String getResult() {
-        long start = System.currentTimeMillis();
-        while (mRecognitionResult == null && (System.currentTimeMillis() - start) / 1000 < 5) {
-            // wait until either recognition result is available or if 5 seconds have elapsed
-        }
-        String result = mRecognitionResult;
-        mRecognitionResult = null;
-        return result;
-    }
-
-    /**
      * Enable speech recognizer progress logging information.
+     * @param enableLogging true to enable logging, and false to disable (default)
      */
     public void setProgressLogging(boolean enableLogging) {
         mEnableLogging = enableLogging;
@@ -163,7 +150,14 @@ public class SpeechToText {
             }
 
             // retrieve recognition result
-            mRecognitionResult = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION).get(0);
+            String recognitionResult = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION).get(0);
+            if (recognitionResult == null) {
+                recognitionResult = "";
+            }
+
+            if (mContext instanceof SpeechToTextListener) {
+                ((SpeechToTextListener) mContext).onRecognitionResult(recognitionResult);
+            }
         }
 
         @Override
@@ -177,6 +171,17 @@ public class SpeechToText {
                 Log.d(TAG, "onEvent: " + eventType);
             }
         }
+    }
+
+    /**
+     * Interface for retrieving recognition result.
+     */
+    public interface SpeechToTextListener {
+        /**
+         * Callback method for the recognize() method.
+         * @param recognitionResult string result for the performed recognition
+         */
+        void onRecognitionResult(String recognitionResult);
     }
 
     private class InvalidLanguageModelException extends RuntimeException {
