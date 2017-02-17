@@ -9,13 +9,13 @@ A custom RecognitionListener, which implements the interface methods (onReadyFor
 ## Usage
 ### Constructor:
 **_public SpeechToText(Context context, String languageModel)_**  
-Initialize a SpeechToText object.
-context - current application context
+Initialize a SpeechToText object.  
+context - current application context  
 languageModel - specifies the model depending on desired use (either SpeechToText.WORD or SpeechToText.SENTENCE).
 
 ### Public Methods:
 **_public void setProgressLogging(boolean enableLogging)_**  
-Specify whether to enable logging of recognizer progress.
+Specify whether to enable logging of recognizer progress.  
 enableLogging - _true_ to enable logging, and _false_ to disable (default).
 
 **_recognize()_**  
@@ -26,7 +26,7 @@ Initiate speech recognition.
 Interface for retrieving recognition result.
 
 **_onRecognitionResult(String recognitionResult)_**  
-Callback method for the recognize() method.
+Callback method for the recognize() method.  
 recognitionResult - string result for the performed recognition.
 
 ## Example Usage
@@ -35,6 +35,6 @@ stt.setProgressLogging(true);
 stt.recognize();  
 
 @Override  
-public void onRecognitionResult(String recognitionResult) {
+public void onRecognitionResult(String recognitionResult) {  
 &nbsp;&nbsp;&nbsp;&nbsp;mTextView.setText(recognitionResult;  
 }
